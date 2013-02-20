@@ -12,16 +12,16 @@ var schemaUrl = 'http://json-schema.org/draft-04/schema#';
 
 describe('JSON schema self-validation test:', function() {
   describe('validate meta-schema (synchronously):', function() {
-    var jj = new JaySchema();
+    var v = new JaySchema.Validator();
     it('should self-validate the JSON Schema schema', function() {
-      jj.validate(v4Schema, v4Schema).should.be.empty;
+      v.validate(v4Schema, v4Schema).should.be.empty;
     });
   });
 
   describe('validate meta-schema (asynchronously):', function() {
-    var jj = new JaySchema(JaySchema.loaders.http);
+    var v = new JaySchema.Validator(JaySchema.HttpLoader);
     it('should self-validate the JSON Schema schema', function(done) {
-      jj.validate(v4Schema, {$ref: schemaUrl}, function(errs) {
+      v.validate(v4Schema, {$ref: schemaUrl}, function(errs) {
         should.not.exist(errs);
         done();
       });

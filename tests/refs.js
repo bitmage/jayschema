@@ -12,7 +12,7 @@ describe('JSON references:',
 {
   describe('reference previously manually-registered schema:', function() {
 
-    var jj = new JaySchema();
+    var v = new JaySchema.Validator();
     var sch;
 
     var otherSchema = {
@@ -28,7 +28,7 @@ describe('JSON references:',
       }
     };
 
-    jj.register(otherSchema);
+    v.register(otherSchema);
 
     it('should validate', function() {
       sch = {
@@ -38,7 +38,7 @@ describe('JSON references:',
         }
       };
 
-      jj.validate({name: {first: 'Mohammed', last: 'Chang'}}, sch)
+      v.validate({name: {first: 'Mohammed', last: 'Chang'}}, sch)
         .should.be.empty;
     });
 
@@ -50,14 +50,14 @@ describe('JSON references:',
         }
       };
 
-      jj.validate({name: {last: 'Chang'}}, sch).should.not.be.empty;
+      v.validate({name: {last: 'Chang'}}, sch).should.not.be.empty;
     });
 
   });
 
   describe('validate using the string id of a registered schema', function() {
 
-    var jj = new JaySchema();
+    var v = new JaySchema.Validator();
 
     var schema = {
       id: 'http://foo.bar/name#',
@@ -72,7 +72,7 @@ describe('JSON references:',
       }
     };
 
-    jj.register(schema);
+    v.register(schema);
 
     it('should validate', function() {
       var data = {
@@ -81,7 +81,7 @@ describe('JSON references:',
         'last': 'Public'
       };
 
-      jj.validate(data, 'http://foo.bar/name#').should.be.empty;
+      v.validate(data, 'http://foo.bar/name#').should.be.empty;
     });
 
     it('should fail validation', function() {
@@ -89,7 +89,7 @@ describe('JSON references:',
         'first': 'John'
       };
 
-      jj.validate(data, 'http://foo.bar/name#').should.not.be.empty;
+      v.validate(data, 'http://foo.bar/name#').should.not.be.empty;
     });
 
   });

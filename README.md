@@ -15,16 +15,16 @@ A [JSON Schema](http://json-schema.org/documentation.html) validator for Node.js
 ### Basic usage
 
 ```js
-var JaySchema = require('jayschema');
-var js = new JaySchema();
+var Validator = require('jayschema').Validator;
+var v = new Validator();
 var instance = 64;
 var schema = { "type": "integer", "multipleOf": 8 };
 
 // synchronous…
-console.log('synchronous result:', js.validate(instance, schema));
+console.log('synchronous result:', v.validate(instance, schema));
 
 // …or async
-js.validate(instance, schema, function(errs) {
+v.validate(instance, schema, function(errs) {
     if (errs) { console.error(errs); }
     else { console.log('async validation OK!'); }
 });
@@ -36,8 +36,8 @@ Here the Geographic Coordinate schema is loaded over HTTP. You can also supply y
 
 ```js
 var JaySchema = require('jayschema');
-var js = new JaySchema(JaySchema.loaders.http);     // we provide the HTTP loader here
-                                                    // you could load from a DB instead
+var v = new JaySchema.Validator(JaySchema.HttpLoader);  // we provide the HTTP loader
+                                                        // you could load from a DB instead
 
 var instance = { "location": { "latitude": 48.8583, "longitude": 2.2945 } };
 var schema = {
@@ -47,7 +47,7 @@ var schema = {
     }
 };
 
-js.validate(instance, schema, function(errs) {
+v.validate(instance, schema, function(errs) {
   if (errs) { console.error(errs); }
   else { console.log('validation OK!'); }
 });

@@ -51,7 +51,7 @@ try {
   return;
 }
 
-var js = new JaySchema();
+var js = new JaySchema.Validator();
 
 var schemaErrors = js.validate(schemaJson, META_SCHEMA);
 if (schemaErrors.length) {

@@ -11,7 +11,7 @@ var schema = require('./productSet-schema.json');
 var data = require('./data.json');
 
 // Create the JaySchema object
-var js = new JaySchema();
+var v = new JaySchema.Validator();
 
 // Register our schema
 //
@@ -19,7 +19,7 @@ var js = new JaySchema();
 // it's useful, because it will let us know about any missing
 // referenced schemas.
 
-var missingSchemas = js.register(schema);
+var missingSchemas = v.register(schema);
 
 if (missingSchemas.length) {
   // It turns out the productSet schema references a remote schema,
@@ -33,11 +33,11 @@ if (missingSchemas.length) {
   // do it the easy way and use JaySchema's built-in HTTP loader.
   //
   // Here is the easy way:
-  js.loader = JaySchema.loaders.http;
+  v.loader = JaySchema.loaders.http;
 }
 
 // Okay, let's validate, asynchronously.
-js.validate(data, schema, function(errs) {
+v.validate(data, schema, function(errs) {
   if (errs) { console.error('validation errors:\n', errs); }
   else { console.log('no validation errors!'); }
 });
