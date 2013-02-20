@@ -6,13 +6,16 @@ A [JSON Schema](http://json-schema.org/documentation.html) validator for Node.js
 * Optional dynamic loader for referenced schemas (load schemas from a database or the web)
 * Useful error messages.
 
-## Install
+Install
+=======
 
     npm install jayschema
 
-## Usage
+Use
+===
 
-### Basic usage
+Basic usage
+-----------
 
 ```js
 var Validator = require('jayschema').Validator;
@@ -30,14 +33,15 @@ v.validate(instance, schema, function(errs) {
 });
 ```
 
-### Loading schemas from HTTP or from your database
+Loading schemas from HTTP or a database
+---------------------------------------
 
-Here the Geographic Coordinate schema is loaded over HTTP. You can also supply your own loader—for example, to load schemas from a database.
+Here the Geographic Coordinate schema is loaded over HTTP. You could supply your own loader—for example, to load schemas from a database.
 
 ```js
 var JaySchema = require('jayschema');
 var v = new JaySchema.Validator(JaySchema.HttpLoader);  // we provide the HTTP loader
-                                                        // you could load from a DB instead
+                                                        // you can provide your own loader
 
 var instance = { "location": { "latitude": 48.8583, "longitude": 2.2945 } };
 var schema = {
@@ -53,7 +57,8 @@ v.validate(instance, schema, function(errs) {
 });
 ```
 
-## Why JSON Schema?
+Why JSON Schema?
+================
 
 * Validate JSON server-side:
     * For your JSON-based API
@@ -61,15 +66,19 @@ v.validate(instance, schema, function(errs) {
 * No [ORM](https://npmjs.org/browse/keyword/orm) required. Change databases or store data in multiple databases using the same schemas. For example, session data in Redis, permanent data in MongoDB.
 * JSON Schema has a really nice declarative syntax. See the [official examples](http://json-schema.org/examples.html).
 
-## API
+API
+===
 
-### JaySchema([loader])
+new JaySchema.Validator([loader])
+---------------------------------
 
-**(Constructor)** The optional *loader* will be called each time an external `$ref` is encountered. It should load the referenced schema and return it.
+Constructor for the JaySchema validator.
 
-If you don’t reference any external schemas, or if you pre-register all the schemas you’re using, you don’t need to provide a *loader*.
+The optional `loader` will be called each time an external `$ref` is encountered. It should load the referenced schema and return it.
 
-**If you provide a *loader*, you should call the validate() function asynchronously.** That’s because loading involves disk or network I/O, and I/O operations in Node are asynchronous.
+If you don’t reference any external schemas, or if you pre-register all the schemas you’re using, you don’t need to provide a `loader`.
+
+**If you provide a `loader`, you should call the validate() function asynchronously.** That’s because loading involves disk or network I/O, and I/O operations in Node are asynchronous.
 
 Sample loader skeleton:
 
@@ -85,7 +94,9 @@ function loader(ref, callback) {
 }
 ```
 
-### JaySchema.prototype.validate(instance, schema [, callback])
+
+.validate(instance, schema [, callback])
+-----------------------------------------------------------
 
 Validate a JSON object, *instance*, against the given *schema*. If you provide a *callback*, validation will be done asynchronously.
 
@@ -96,7 +107,8 @@ Validate a JSON object, *instance*, against the given *schema*. If you provide a
 * **async:** Uses the standard Node callback signature. The first argument will be an array of errors, if any errors occurred, or `undefined` on success.
 * **synchronous:** If you don’t provide a callback, an array of errors will be returned. Success is indicated by an empty array.
 
-### JaySchema.prototype.register(schema [, id])
+JaySchema.prototype.register(schema [, id])
+-------------------------------------------
 
 Manually register *schema*. Useful if you have several related schemas you are working with. The optional *id* can be used to register a schema that doesn’t have an `id` property, or which is referenced using a unique id.
 
@@ -104,43 +116,41 @@ Manually register *schema*. Useful if you have several related schemas you are w
 
 See [Schema loading](#schema-loading).
 
-### JaySchema.prototype.getMissingSchemas()
+JaySchema.prototype.getMissingSchemas()
+---------------------------------------
 
 Returns an array of missing schemas. A missing schema is one that was `$ref`erenced by a `register()`ed schema, but the referenced schema has not yet been loaded.
 
 See [Schema loading](#schema-loading).
 
-### Loaders
+JaySchema.Validator configuration properties
+--------------------------------------------
+
+* **`maxRecursion`**: The maximum depth to recurse when retrieving external `$ref` schemas using a loader. The default is `5`.
+* `loader`: The schema loader to use, if any. This is the same schema loader that was passed to the constructor. You can change or override this at any time.
+
+Loaders
+=======
 
 A loader can be passed to the constructor, or you can set the `loader` property at any time. You can define your own loader. **JaySchema** also includes one built-in loader for your convenience:
 
-#### JaySchema.loaders.http
+JaySchema.Loaders.Http
+----------------------
 
-Loads external `$ref`s using HTTP. :warning: **Caveat:** HTTP is inherently unreliable. For example, the network or site may be down, or the referenced schema may not be available any more. You really shouldn’t use this in production, but it’s great for testing.
+Loads external `$ref`s using HTTP. **Caveat:** HTTP is inherently unreliable. For example, the network or site may be down, or the referenced schema may not be available any more. You really shouldn’t use this in production, but it’s great for testing.
 
-### Configuration options
+Schema loading
+==============
 
-### maxRecursion
+In JSON Schema, you use the `$ref` keyword to pull in an external schema. For example, you might reference a schema that’s available in a local database.
 
-The maximum depth to recurse when retrieving external `$ref` schemas using a loader. The default is `5`.
-
-### loader
-
-The schema loader to use, if any. (The same schema loader that was passed to the `JaySchema` constructor.) You can change or override this at any time.
-
-## Schema loading
-
-**JaySchema** provides several ways to register externally-referenced schemas.
-
-You use the `$ref` keyword to pull in an external schema. For example, you might reference a schema that’s available in a local database.
-
-Validation will fail if **JaySchema** encounters a validation rule that references an external schema, if that schema is not `register`ed.
+Validation will fail if **JaySchema** encounters a validation rule that references an external schema, and if that schema is not `register`ed.
 
 There are several ways to ensure that all referenced schemas are registered:
 
 ### Using a loader
 
-Pass a `loader` callback to the `JaySchema` constructor. When an external schema is needed, **JaySchema** will call your loader. See the constructor documentation, above. Using a loader requires you to validate asynchronously.
+Pass a `loader` callback to the `Validator` constructor. When an external schema is needed, the validator will call your loader. See the constructor documentation, above. Using a loader requires you to validate asynchronously.
 
 ### By using the `getMissingSchemas()` method
 
@@ -161,9 +171,10 @@ In other words: calling `register(schemaA);` will (1) register `schemaA` and (2)
 
 If, instead, you want the list of *all* missing schemas referenced by all registrations that have been done so far, use the `getMissingSchemas()` method, above.
 
-## Format specifiers
+Format specifiers
+=================
 
-**JaySchema** supports the following values for the optional `format` keyword:
+The vailidator supports the following values for the optional `format` keyword:
 
 * `date-time`: Must match the `date-time` specification given in [RFC 3339, Section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
 * `hostname`: Must match the “Preferred name syntax” given in [RFC 1034, Section 3.5](https://tools.ietf.org/html/rfc1034#section-3.5), with the exception that hostnames are permitted to begin with a digit, as per [RFC 1123 Section 2.1](http://tools.ietf.org/html/rfc1123#section-2.1).
