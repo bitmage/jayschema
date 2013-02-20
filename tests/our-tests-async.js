@@ -73,7 +73,7 @@ describe('Our test suite (running async):', function() {
 
           if (!shouldSkip(jsonFile, group.description, test.description)) {
             it(test.description, function(done) {
-              var v = new JaySchema.Validator(JaySchema.HttpLoader);
+              var v = new JaySchema.Validator(JaySchema.Loaders.Http);
               v.validate(test.data, group.schema, function(errs) {
                 if (test.valid) {
                   should.not.exist(errs);
