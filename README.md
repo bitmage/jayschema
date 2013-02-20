@@ -6,6 +6,8 @@ A [JSON Schema](http://json-schema.org/documentation.html) validator for Node.js
 * Optional dynamic loader for referenced schemas (load schemas from a database or the web)
 * Useful error messages.
 
+If you are upgrading from version 0.1.x, see the **Compatibility** section below.
+
 Install
 =======
 
@@ -126,7 +128,7 @@ See [Schema loading](#schema-loading).
 JaySchema.Validator configuration properties
 --------------------------------------------
 
-* **`maxRecursion`**: The maximum depth to recurse when retrieving external `$ref` schemas using a loader. The default is `5`.
+* `maxRecursion`: The maximum depth to recurse when retrieving external `$ref` schemas using a loader. The default is `5`.
 * `loader`: The schema loader to use, if any. This is the same schema loader that was passed to the constructor. You can change or override this at any time.
 
 Loaders
@@ -182,3 +184,8 @@ The vailidator supports the following values for the optional `format` keyword:
 * `ipv4`: Must be a dotted-quad IPv4 address.
 * `ipv6`: Must be a valid IPv6 address as per [RFC 2373 section 2.2](http://tools.ietf.org/html/rfc2373#section-2.2).
 * `uri`: As in [RFC 3986 Appendix A](http://tools.ietf.org/html/rfc3986#appendix-A), including relative URIs (no scheme part, fragment-only), with the exception that well-formedness of internal elements, including percent encoding and authority strings, is not verified.
+
+Compatibility with version 0.1.x
+================================
+
+The **JaySchema** API has changed significantly in this version, but is backward-compatible with version 0.1.x. For example, `new JaySchema()` (the old way of instantiating a `Validator`) works but is deprecated. At some point in the future the backward-compatible API will be removed.
