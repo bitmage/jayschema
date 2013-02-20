@@ -9,7 +9,7 @@
     "url": "git://github.com/natesilva/jayschema.git"
   },
   "bugs": "https://github.com/natesilva/jayschema/issues",
-  "main": "./lib/jayschema.js",
+  "main": "./lib/jaySchema.js",
   "keywords": [
     "json",
     "schema",
