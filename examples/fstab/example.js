@@ -3,7 +3,7 @@
 // http://json-schema.org/example2.html.
 //
 
-var JaySchema = require('../../lib/jayschema.js')
+var JaySchema = require('../../lib/jaySchema.js')
   , assert = require('assert')
   , util = require('util')
   ;

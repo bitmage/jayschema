@@ -3,7 +3,7 @@
 // http://json-schema.org/example1.html.
 //
 
-var JaySchema = require('../../lib/jayschema.js')
+var JaySchema = require('../../lib/jaySchema.js')
   ;
 
 // Load the schema and the data to be validated

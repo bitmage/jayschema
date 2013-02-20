@@ -2,7 +2,7 @@
 
 // simple command-line validation
 
-var JaySchema = require('../lib/jayschema.js')
+var JaySchema = require('../lib/jaySchema.js')
   , fs = require('fs')
   , path = require('path')
   ;
