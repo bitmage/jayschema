@@ -109,8 +109,8 @@ Validate a JSON object, *instance*, against the given *schema*. If you provide a
 * **async:** Uses the standard Node callback signature. The first argument will be an array of errors, if any errors occurred, or `undefined` on success.
 * **synchronous:** If you don’t provide a callback, an array of errors will be returned. Success is indicated by an empty array.
 
-JaySchema.prototype.register(schema [, id])
--------------------------------------------
+.register(schema [, id])
+------------------------
 
 Manually register *schema*. Useful if you have several related schemas you are working with. The optional *id* can be used to register a schema that doesn’t have an `id` property, or which is referenced using a unique id.
 
@@ -118,8 +118,8 @@ Manually register *schema*. Useful if you have several related schemas you are w
 
 See [Schema loading](#schema-loading).
 
-JaySchema.prototype.getMissingSchemas()
----------------------------------------
+.getMissingSchemas()
+--------------------
 
 Returns an array of missing schemas. A missing schema is one that was `$ref`erenced by a `register()`ed schema, but the referenced schema has not yet been loaded.
 
