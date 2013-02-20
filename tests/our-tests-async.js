@@ -4,7 +4,7 @@
 
 
 var should = require('should')
-  , JaySchema = require('../lib/jayschema.js')
+  , JaySchema = require('../lib/jaySchema.js')
   , fs = require('fs')
   , path = require('path')
   ;
@@ -73,8 +73,8 @@ describe('Our test suite (running async):', function() {
 
           if (!shouldSkip(jsonFile, group.description, test.description)) {
             it(test.description, function(done) {
-              var jj = new JaySchema(JaySchema.loaders.http);
-              jj.validate(test.data, group.schema, function(errs) {
+              var v = new JaySchema.Validator(JaySchema.Loaders.Http);
+              v.validate(test.data, group.schema, function(errs) {
                 if (test.valid) {
                   should.not.exist(errs);
                 } else {

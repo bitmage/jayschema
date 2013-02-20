@@ -2,7 +2,7 @@
 
 // simple command-line validation
 
-var JaySchema = require('../lib/jayschema.js')
+var JaySchema = require('../lib/jaySchema.js')
   , fs = require('fs')
   , path = require('path')
   ;
@@ -51,7 +51,7 @@ try {
   return;
 }
 
-var js = new JaySchema();
+var js = new JaySchema.Validator();
 
 var schemaErrors = js.validate(schemaJson, META_SCHEMA);
 if (schemaErrors.length) {

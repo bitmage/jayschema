@@ -3,13 +3,13 @@
 // http://json-schema.org/example2.html.
 //
 
-var JaySchema = require('../../lib/jayschema.js')
+var JaySchema = require('../../lib/jaySchema.js')
   , assert = require('assert')
   , util = require('util')
   ;
 
 // Create the JaySchema object
-var js = new JaySchema();
+var v = new JaySchema.Validator();
 
 // Grab some sample data to validate
 var data = require('./data.json');
@@ -19,10 +19,10 @@ var schema = require('./fstab-schema.json');
 var entrySchema = require('./entry-schema.json');
 
 // Register the dependency schema
-js.register(entrySchema);
+v.register(entrySchema);
 
 // Okay, let's validate. Synchronously this time.
-var errors = js.validate(data, schema);
+var errors = v.validate(data, schema);
 
 if (errors.length) {
   console.error('validation errors:\n', util.inspect(errors, false, null));
